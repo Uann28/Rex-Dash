@@ -1,6 +1,8 @@
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+import java.awt.AlphaComposite;
 
 public class Dino extends GameObject implements Animatable {
 
@@ -8,6 +10,7 @@ public class Dino extends GameObject implements Animatable {
     private static final double JUMP_SPEED   = -900; 
     private static final int    GROUND_Y     = 350;  
     private static final double MAX_FALL_SPEED = 2000;
+    private static final int Y_OFFSET_DINO = 10;
 
     private double velY = 0;
     private boolean diTanah = true;
@@ -18,9 +21,18 @@ public class Dino extends GameObject implements Animatable {
 
     private boolean crouch = false;
     private boolean fastFall = false;
-
+    
+    private BufferedImage trexImage; 
+    private static final int UKURAN_LEBAR_DINO= 70;
+    private static final int UKURAN_TINGGI_DINO = 75;
+    
     public Dino(double x, double y) {
-        super(x, y, 60, 60); 
+        super(x, y, UKURAN_LEBAR_DINO, UKURAN_TINGGI_DINO); 
+
+        this.trexImage = ImageManager.loadImage("trex.png");
+        
+        // Atur posisi Y agar kaki berada di GROUND_Y sesuai tinggi yang sudah ditetapkan
+        this.y = GROUND_Y - this.tinggi + Y_OFFSET_DINO;
     }
 
     @Override
@@ -38,7 +50,7 @@ public class Dino extends GameObject implements Animatable {
         y += velY * deltaDetik;
 
         if (y >= GROUND_Y - tinggi) {
-            y = GROUND_Y - tinggi;
+            y = GROUND_Y - tinggi + Y_OFFSET_DINO;
             velY = 0;
             diTanah = true;
             fastFall = false;
@@ -48,11 +60,11 @@ public class Dino extends GameObject implements Animatable {
 
         if (diTanah) {
             if (crouch) {
-                tinggi = 40;
+                this.tinggi = UKURAN_TINGGI_DINO - (UKURAN_TINGGI_DINO/ 3); 
             } else {
-                tinggi = 60;
+                this.tinggi = UKURAN_TINGGI_DINO;
             }
-            y = GROUND_Y - tinggi;
+            y = GROUND_Y - tinggi + Y_OFFSET_DINO;
         }
 
         if (efekInvisAktif) {
@@ -66,10 +78,23 @@ public class Dino extends GameObject implements Animatable {
 
     @Override
     public void draw(Graphics2D g2) {
-        Color c = efekInvisAktif ? new Color(150, 150, 255, 200) : new Color(100, 200, 120);
-        g2.setColor(c);
-        g2.fillRect((int) x, (int) y, lebar, tinggi);
+        if (trexImage != null) {
+            if (efekInvisAktif) {
+                // Efek berkedip 50% opacity
+                if (System.currentTimeMillis() % 200 > 100) { 
+                    g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
+                } else {
+                    g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
+                }
+            }
+            g2.drawImage(trexImage, (int) x, (int) y, lebar, tinggi, null);
 
+            if (efekInvisAktif) {
+                g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
+            }
+            
+        }
+        
         if (hasBarrier) {
             g2.setColor(new Color(255, 255, 0, 200));
             int pad = 4;
@@ -95,11 +120,11 @@ public class Dino extends GameObject implements Animatable {
         if (diTanah) {
             fastFall = false;
             if (crouch) {
-                tinggi = 40;
+                tinggi = UKURAN_TINGGI_DINO - (UKURAN_TINGGI_DINO / 3);
             } else {
-                tinggi = 60;
+                tinggi = UKURAN_TINGGI_DINO;
             }
-            y = GROUND_Y - tinggi;
+            y = GROUND_Y - tinggi + Y_OFFSET_DINO;
         } else {
             fastFall = c;
             if (c) {
@@ -138,12 +163,15 @@ public class Dino extends GameObject implements Animatable {
 
     @Override
     public Rectangle getBounds() {
-        int margin = 6;
+        int marginYTop = 20;
+        int marginX =15;
+        int tinggiDagingTabrakan = tinggi - marginYTop;
+
         return new Rectangle(
-                (int) x + margin,
-                (int) y + margin,
-                lebar - margin * 2,
-                tinggi - margin * 2
+                (int) x + marginX,
+                (int) y + marginYTop,
+                lebar - marginX * 2,
+                tinggiDagingTabrakan
         );
     }
 }

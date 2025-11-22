@@ -1,3 +1,4 @@
+// Tambahan untuk Dino.java
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -6,11 +7,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import javax.swing.JPanel;
+import java.awt.image.BufferedImage;
 
 class GamePanel extends JPanel implements Runnable {
 
     private final Main app;
-
+    private BufferedImage backgroundImage;
     private Dino dino;
     private final List<GameObject> listObjek = new ArrayList<>();
     private final List<Obstacle>   listRintangan = new ArrayList<>();
@@ -43,6 +45,7 @@ class GamePanel extends JPanel implements Runnable {
         setFocusable(true);
         setDoubleBuffered(true);
 
+        this.backgroundImage = ImageManager.loadImage("langit.png");
         dino = new Dino(120, GROUND_Y - 60);
         listObjek.add(dino);
 
@@ -92,7 +95,8 @@ class GamePanel extends JPanel implements Runnable {
         listRintangan.clear();
         listPower.clear();
         listObjek.clear();
-        dino = new Dino(140, GROUND_Y - 60);
+
+        dino = new Dino(140, GROUND_Y - 60); 
         listObjek.add(dino);
 
         skor = 0;
@@ -102,7 +106,7 @@ class GamePanel extends JPanel implements Runnable {
         timeAfterPotion = 0;
         nextPowerUpDelay = 10.0 + rand.nextDouble() * 8.0;
 
-        countdown = 3.0;              // 3 detik countdown
+        countdown = 3.0;              
         state = GameState.READY;     
 
         if (gameThread == null || !jalan) {
@@ -206,7 +210,7 @@ class GamePanel extends JPanel implements Runnable {
         }
 
         dino.update(deltaDetik);
-        // method update animasi disini sebenernya belum kepake soalnya belum ada sprite dino sama burung
+        
         if (dino instanceof Animatable) {
             ((Animatable) dino).updateAnimasi(deltaNanos);
         }
@@ -217,6 +221,8 @@ class GamePanel extends JPanel implements Runnable {
                 ((Animatable) o).updateAnimasi(deltaNanos);
             }
         }
+        
+        // Loop PowerUp untuk pembaruan posisi
         for (PowerUp p : listPower) {
             p.update(deltaDetik);
         }
@@ -273,10 +279,10 @@ class GamePanel extends JPanel implements Runnable {
         int roll = rand.nextInt(10);
 
         if (roll < 4) {
-            listRintangan.add(new Cactus(getWidth(), GROUND_Y, speedX));
+            listRintangan.add(new Cactus(getWidth(), GROUND_Y, speedX)); 
         } else if (roll < 7) {
             int yBird = GROUND_Y - 120 + rand.nextInt(40);
-            listRintangan.add(new Bird(getWidth(), yBird, speedX * 1.1));
+            listRintangan.add(new Bird(getWidth(), yBird, speedX * 1.1)); 
         } else if (roll < 9) {
             listRintangan.add(new Hole(getWidth(), GROUND_Y, speedX));
         } else {
@@ -302,8 +308,16 @@ class GamePanel extends JPanel implements Runnable {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         // background
-        g2.setColor(Theme.BG);
-        g2.fillRect(0, 0, getWidth(), getHeight());
+        if (backgroundImage != null) {
+            // diskalakan agar sesuai dengan lebar dan area langit
+            g2.drawImage(backgroundImage, 
+                         0, 0, 
+                         getWidth(), GROUND_Y, 
+                         null);
+        } else {
+            g2.setColor(Theme.BG); 
+            g2.fillRect(0, 0, getWidth(), GROUND_Y); 
+        }
 
         // tanah
         g2.setColor(new Color(80, 60, 30));
