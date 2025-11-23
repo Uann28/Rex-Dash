@@ -1,30 +1,41 @@
 import java.awt.*;
 import javax.swing.*;
+import java.awt.image.BufferedImage;
 
 class LoginPanel extends JPanel {
 
     private final Main app;
     private final JTextField kolomUser = new JTextField();
     private final JPasswordField kolomPass = new JPasswordField();
+    private Image backgroundImage;
 
     LoginPanel(Main m) {
         this.app = m;
         setLayout(new GridBagLayout());
-        setBackground(Theme.BG);
+        loadBackgroundImage("/assets/bg.jpeg");
 
         GridBagConstraints gc = new GridBagConstraints();
         gc.insets = new Insets(6, 6, 6, 6);
         gc.fill = GridBagConstraints.HORIZONTAL;
 
-        JLabel judul = new JLabel("Welcome to Dino Dash");
+        gc.anchor = GridBagConstraints.CENTER;
+        gc.gridwidth = 2; gc.gridx = 0; gc.gridy = 0;
+        JLabel judul = new JLabel("Welcome to");
         judul.setFont(Theme.H1);
         judul.setForeground(Theme.PRIMARY);
-        gc.gridx = 0; gc.gridy = 0; gc.gridwidth = 2;
         add(judul, gc);
+
+        gc.gridy++;
+        gc.anchor = GridBagConstraints.CENTER;
+        JLabel judulBaris2 = new JLabel("REX-DASH!");
+        judulBaris2.setFont(Theme.H1);
+        judulBaris2.setForeground(Theme.PRIMARY);
+        add(judulBaris2, gc);
 
         gc.gridwidth = 1; gc.gridy++;
         JLabel lUser = new JLabel("Username:");
         lUser.setForeground(Theme.TEXT);
+        gc.gridx = 0;
         add(lUser, gc);
 
         gc.gridx = 1;
@@ -50,6 +61,31 @@ class LoginPanel extends JPanel {
         btnLogin.addActionListener(e -> prosesLogin());
         btnReg.addActionListener(e -> prosesRegister());
         kolomPass.addActionListener(e -> prosesLogin());
+    }
+
+    private void loadBackgroundImage(String path) {
+        try {
+            backgroundImage = new ImageIcon(getClass().getResource(path)).getImage();
+        } catch (Exception e) {
+            System.err.println("Gagal memuat gambar background dari path: " + path);
+            e.printStackTrace();
+            setBackground(Theme.BG);
+        }
+    }
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        
+        if (backgroundImage != null) {
+            g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+            Graphics2D g2d = (Graphics2D) g.create();
+            g2d.setColor(new Color(0, 0, 0, 150));
+            g2d.fillRect(0, 0, getWidth(), getHeight());
+            g2d.dispose();
+        } else {
+            g.setColor(getBackground());
+            g.fillRect(0, 0, getWidth(), getHeight());
+        }
     }
 
     private void prosesLogin() {

@@ -1,6 +1,6 @@
 public enum GameState {
     MENU,
-    READY,     
+    READY,
     PLAYING,
     GAME_OVER
 }

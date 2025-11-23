@@ -106,8 +106,10 @@ class GamePanel extends JPanel implements Runnable {
         timeAfterPotion = 0;
         nextPowerUpDelay = 10.0 + rand.nextDouble() * 8.0;
 
-        countdown = 3.0;              
-        state = GameState.READY;     
+        countdown = 3.0;
+        state = GameState.READY;
+
+        AudioPlayer.play("start.wav");
 
         if (gameThread == null || !jalan) {
             jalan = true;
@@ -145,6 +147,7 @@ class GamePanel extends JPanel implements Runnable {
 
     private void gameOver() {
         if (state == GameState.GAME_OVER) return;
+        AudioPlayer.play("end.wav");
         state = GameState.GAME_OVER;
         jalan = false;
 
@@ -185,10 +188,10 @@ class GamePanel extends JPanel implements Runnable {
         }
         if (state != GameState.PLAYING) return;
 
-        skor += (long) (deltaDetik * 100);   
+        skor += (long) (deltaDetik * 100);
         speedMultiplier = 1.0 + skor / 2000.0;
         if (speedMultiplier > 2.7) {
-            speedMultiplier = 2.7;         
+            speedMultiplier = 2.7;
         }
         double speedObstaclesPot = baseSpeed * speedMultiplier;
 
@@ -244,6 +247,7 @@ class GamePanel extends JPanel implements Runnable {
 
                 if (p instanceof BarrierPotion) {
                     dino.useBarrier();
+                    AudioPlayer.play("collect.wav");
                 } else if (p instanceof InvisiblePotion) {
                     dino.aktifkanInvis(5.0);
                 }
@@ -295,7 +299,7 @@ class GamePanel extends JPanel implements Runnable {
         int roll = rand.nextInt(10);
         if (roll < 5) {
             listPower.add(new BarrierPotion(getWidth(), GROUND_Y, speedX));
-        } else {  
+        } else {
             int y = GROUND_Y - 110;
             listPower.add(new InvisiblePotion(getWidth(), y, speedX));
         }
@@ -310,13 +314,13 @@ class GamePanel extends JPanel implements Runnable {
         // background
         if (backgroundImage != null) {
             // diskalakan agar sesuai dengan lebar dan area langit
-            g2.drawImage(backgroundImage, 
-                         0, 0, 
-                         getWidth(), GROUND_Y, 
-                         null);
+            g2.drawImage(backgroundImage,
+                        0, 0,
+                        getWidth(), GROUND_Y,
+                        null);
         } else {
-            g2.setColor(Theme.BG); 
-            g2.fillRect(0, 0, getWidth(), GROUND_Y); 
+            g2.setColor(Theme.BG);
+            g2.fillRect(0, 0, getWidth(), GROUND_Y);
         }
 
         // tanah
@@ -331,10 +335,14 @@ class GamePanel extends JPanel implements Runnable {
         // skor di pojok kanan atas
         g2.setFont(Theme.H2);
         g2.setColor(Theme.TEXT);
-        String scoreText = "Skor: " + skor;
+        String scoreText = "Current score: " + skor;
         FontMetrics fm = g2.getFontMetrics();
         int sw = fm.stringWidth(scoreText);
         g2.drawString(scoreText, getWidth() - sw - 20, 40);
+
+        String highScoreText = "Highscore: " + highScore;
+        int highscoreX = 20;
+        g2.drawString(highScoreText, highscoreX, 40);
 
         // countdown
         if (state == GameState.READY && countdown > 0) {

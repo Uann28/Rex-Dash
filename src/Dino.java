@@ -6,9 +6,9 @@ import java.awt.AlphaComposite;
 
 public class Dino extends GameObject implements Animatable {
 
-    private static final double GRAVITY      = 2200; 
-    private static final double JUMP_SPEED   = -900; 
-    private static final int    GROUND_Y     = 350;  
+    private static final double GRAVITY      = 2200;
+    private static final double JUMP_SPEED   = -900;
+    private static final int    GROUND_Y     = 350;
     private static final double MAX_FALL_SPEED = 2000;
     private static final int Y_OFFSET_DINO = 10;
 
@@ -22,7 +22,7 @@ public class Dino extends GameObject implements Animatable {
     private boolean crouch = false;
     private boolean fastFall = false;
     
-    private BufferedImage trexImage; 
+    private BufferedImage trexImage;
     private static final int UKURAN_LEBAR_DINO= 70;
     private static final int UKURAN_TINGGI_DINO = 75;
     
@@ -105,6 +105,7 @@ public class Dino extends GameObject implements Animatable {
     public void lompat() {
         if (diTanah && !crouch) {
             velY = JUMP_SPEED;
+            AudioPlayer.play("jump.wav");
         }
     }
 
@@ -121,6 +122,7 @@ public class Dino extends GameObject implements Animatable {
             fastFall = false;
             if (crouch) {
                 tinggi = UKURAN_TINGGI_DINO - (UKURAN_TINGGI_DINO / 3);
+                AudioPlayer.play("hide.wav");
             } else {
                 tinggi = UKURAN_TINGGI_DINO;
             }
@@ -131,6 +133,7 @@ public class Dino extends GameObject implements Animatable {
                 if (velY < 1200) {
                     velY = 1200;
                 }
+                AudioPlayer.play("hide.wav");
             }
         }
     }

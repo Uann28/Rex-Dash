@@ -10,8 +10,8 @@ public class Main extends JFrame {
 
     LoginPanel panelLogin;
     MainMenuPanel panelMenu;
-    public GamePanel panelGame;         
-    public LeaderboardPanel panelLeaderboard; 
+    public GamePanel panelGame;
+    public LeaderboardPanel panelLeaderboard;
 
     private int    currentUserId   = -1;
     private String currentUsername = "";

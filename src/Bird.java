@@ -2,7 +2,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
-public class Bird extends Obstacle { 
+public class Bird extends Obstacle {
     private BufferedImage birdImage;
     private static final int UKURAN_LEBAR_BURUNG = 60;
     private static final int UKURAN_TINGGI_BURUNG = 60;
