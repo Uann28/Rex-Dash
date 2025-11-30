@@ -2,7 +2,7 @@ import java.awt.Graphics2D;
 
 public abstract class Obstacle extends GameObject {
 
-    protected double speedX;   // kecepatan geser ke kiri
+    protected double speedX;  
 
     public Obstacle(double x, double y, int w, int h, double speedX) {
         super(x, y, w, h);
@@ -13,7 +13,7 @@ public abstract class Obstacle extends GameObject {
     public void update(double deltaDetik) {
         x += speedX * deltaDetik;
         if (x + lebar < 0) {
-            aktif = false; // sudah lewat layar
+            aktif = false;
         }
     }
 

@@ -5,9 +5,10 @@ import javax.swing.table.*;
 public class LeaderboardPanel extends JPanel {
 
     private final Main app;
+    private Image backgroundImage;
 
     private final DefaultTableModel model = new DefaultTableModel(
-            new Object[]{"Username", "Skor", "Level", "Waktu"}, 0
+            new Object[]{"Username", "Skor", "Waktu"}, 0
     ) {
         @Override
         public boolean isCellEditable(int r, int c) {
@@ -18,11 +19,12 @@ public class LeaderboardPanel extends JPanel {
     public LeaderboardPanel(Main m) {
         this.app = m;
         setLayout(new BorderLayout());
-        setBackground(Theme.BG);
+
+        loadBackgroundImage("/assets/bg.jpeg");
 
         JPanel panelJudul = new JPanel();
         panelJudul.setLayout(new BoxLayout(panelJudul, BoxLayout.Y_AXIS));
-        panelJudul.setBackground(Theme.BG);
+        panelJudul.setOpaque(false);
 
         JLabel lblJudul = new JLabel("Top 10 Leaderboard", SwingConstants.CENTER);
         lblJudul.setFont(Theme.H1);
@@ -62,11 +64,37 @@ public class LeaderboardPanel extends JPanel {
 
         JButton btnKembali = Theme.makeButton("« Kembali ke Menu");
         JPanel bawah = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        bawah.setBackground(Theme.BG);
+        bawah.setOpaque(false);
         bawah.add(btnKembali);
         add(bawah, BorderLayout.SOUTH);
 
         btnKembali.addActionListener(e -> app.showPanel("menu"));
+    }
+
+    private void loadBackgroundImage(String path) {
+        try {
+            backgroundImage = new ImageIcon(getClass().getResource(path)).getImage();
+        } catch (Exception e) {
+            System.err.println("Gagal memuat gambar background dari path: " + path);
+            e.printStackTrace();
+            setBackground(Theme.BG);
+        }
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
+        if (backgroundImage != null) {
+            g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+            Graphics2D g2d = (Graphics2D) g.create();
+            g2d.setColor(new Color(0, 0, 0, 150));
+            g2d.fillRect(0, 0, getWidth(), getHeight());
+            g2d.dispose();
+        } else {
+            g.setColor(getBackground());
+            g.fillRect(0, 0, getWidth(), getHeight());
+        }
     }
 
     public void onOpen() {

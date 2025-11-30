@@ -11,8 +11,13 @@ class KoneksiDatabase {
 
     private static Connection cache;
 
-    public static Connection getConnection() throws SQLException {
-        if (cache != null && !cache.isClosed()) return cache;
+    public static synchronized Connection getConnection() throws SQLException {
+        try {
+            if (cache != null && !cache.isClosed() && cache.isValid(2)) {
+                return cache;
+            }
+        } catch (SQLException ignored) {
+        }
 
         try {
             try {
@@ -29,8 +34,6 @@ class KoneksiDatabase {
 
             try (Connection c = DriverManager.getConnection(urlRoot, USER, PASS);
                  Statement st = c.createStatement()) {
-
-                // bikin database kalau belum ada
                 st.executeUpdate("CREATE DATABASE IF NOT EXISTS `" + DB_NAME + "`");
             }
 
@@ -40,13 +43,14 @@ class KoneksiDatabase {
             );
 
             cache = DriverManager.getConnection(urlDb, USER, PASS);
-
             inisialisasi(cache);
-
             return cache;
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            if (cache != null) {
+                try { cache.close(); } catch (Exception ex) {}
+                cache = null;
+            }
             throw e;
         }
     }
@@ -66,7 +70,6 @@ class KoneksiDatabase {
                     "timestamp DATETIME NOT NULL, " +
                     "FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE" +
                     ") ENGINE=InnoDB");
-
         }
     }
 
@@ -77,7 +80,7 @@ class KoneksiDatabase {
                     "SELECT user_id FROM users WHERE username=?")) {
                 cek.setString(1, usn);
                 try (ResultSet r = cek.executeQuery()) {
-                    if (r.next()) return false; // sudah ada
+                    if (r.next()) return false; 
                 }
             }
             try (PreparedStatement ps = c.prepareStatement(
@@ -128,12 +131,14 @@ class KoneksiDatabase {
 
     public static int getHighScoreForUser(int userId) {
         String sql = "SELECT MAX(score) FROM scores WHERE user_id = ?";
-        try (Connection c = getConnection();
-            PreparedStatement ps = c.prepareStatement(sql)) {
-            ps.setInt(1, userId);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getInt(1); 
+        try {
+            Connection c = getConnection();
+            try (PreparedStatement ps = c.prepareStatement(sql)) {
+                ps.setInt(1, userId);
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        return rs.getInt(1);
+                    }
                 }
             }
         } catch (SQLException e) {
@@ -142,6 +147,21 @@ class KoneksiDatabase {
         return 0;
     }
 
+    public static Integer getGlobalHighScore() {
+        String sql = "SELECT MAX(score) FROM scores";
+        try {
+            Connection c = getConnection();
+            try (PreparedStatement ps = c.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 
     public static List<Object[]> getLeaderboardTop10() {
         List<Object[]> rows = new ArrayList<>();
@@ -149,15 +169,17 @@ class KoneksiDatabase {
                 "SELECT u.username, s.score, s.timestamp " +
                 "FROM scores s JOIN users u ON s.user_id=u.user_id " +
                 "ORDER BY s.score DESC, s.timestamp ASC LIMIT 10";
-        try (Connection c = getConnection();
-             PreparedStatement ps = c.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
-            while (rs.next()) {
-                rows.add(new Object[]{
-                        rs.getString(1),  
-                        rs.getInt(2),      
-                        rs.getTimestamp(3) 
-                });
+        try {
+            Connection c = getConnection();
+            try (PreparedStatement ps = c.prepareStatement(sql);
+                 ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    rows.add(new Object[]{
+                            rs.getString(1),  
+                            rs.getInt(2),      
+                            rs.getTimestamp(3) 
+                    });
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();

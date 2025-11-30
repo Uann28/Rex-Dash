@@ -9,7 +9,7 @@ public class BarrierPotion extends PowerUp {
 
     public BarrierPotion(double x, double groundY, double speedX) {
         super(x, groundY - 40, UKURAN_LEBAR_POTION, UKURAN_TINGGI_POTION, speedX);
-        this.potionImage = ImageManager.loadImage("daging.png");
+        this.potionImage = ImageManager.loadImage("BarrierPotion.png");
     }
 
     @Override

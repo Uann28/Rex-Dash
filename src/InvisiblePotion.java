@@ -10,7 +10,7 @@ public class InvisiblePotion extends PowerUp {
     public InvisiblePotion(double x, double groundY, double speedX) {
         super(x, groundY - 30, UKURAN_LEBAR_POTION, UKURAN_TINGGI_POTION, speedX);
         
-        this.potionImage = ImageManager.loadImage("daging.png");
+        this.potionImage = ImageManager.loadImage("invisPotion.png");
     }
 
     @Override

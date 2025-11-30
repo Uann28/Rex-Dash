@@ -1,6 +1,5 @@
 import java.awt.*;
 import javax.swing.*;
-import java.awt.image.BufferedImage;
 
 class LoginPanel extends JPanel {
 
@@ -72,6 +71,7 @@ class LoginPanel extends JPanel {
             setBackground(Theme.BG);
         }
     }
+    
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);

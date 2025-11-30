@@ -1,9 +1,8 @@
 import java.awt.*;
+import java.io.IOException;
+import java.io.InputStream;
 import javax.swing.*;
 import javax.swing.text.*;
-import java.io.InputStream;
-import java.io.File;
-import java.io.IOException;
 
 class Theme {
 
