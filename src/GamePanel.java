@@ -166,18 +166,18 @@ public class GamePanel extends JPanel implements Runnable {
                 SwingUtilities.invokeLater(() -> {
                     highScore = gh;
                     repaint();
-                    startGameThreadIfNeeded();
+                    startGameThread();
                 });
             } catch (Exception ex) {
                 ex.printStackTrace();
                 SwingUtilities.invokeLater(() -> {
-                    startGameThreadIfNeeded();
+                    startGameThread();
                 });
             }
         }, "load-global-highscore-and-start").start();
     }
 
-    private void startGameThreadIfNeeded() {
+    private void startGameThread() {
         if (gameThread == null || !jalan) {
             jalan = true;
             if (gameThread == null || !gameThread.isAlive()) {
