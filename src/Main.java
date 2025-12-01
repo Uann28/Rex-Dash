@@ -81,6 +81,8 @@ public class Main extends JFrame {
     }
 
     public static void main(String[] args) {
+        Theme.setupStandardPopupStyle();
+
         SwingUtilities.invokeLater(() -> {
             Main f = new Main();
             f.setVisible(true);

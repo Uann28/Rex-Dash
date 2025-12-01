@@ -13,6 +13,12 @@ class LoginPanel extends JPanel {
         setLayout(new GridBagLayout());
         loadBackgroundImage("/assets/bg.jpeg");
 
+        // --- SETTING FONT INPUT MENJADI PIXEL ---
+        Font inputFont = Theme.PIXEL_FONT.deriveFont(16f); 
+        kolomUser.setFont(inputFont);
+        kolomPass.setFont(inputFont);
+        // ----------------------------------------
+
         GridBagConstraints gc = new GridBagConstraints();
         gc.insets = new Insets(6, 6, 6, 6);
         gc.fill = GridBagConstraints.HORIZONTAL;
@@ -33,6 +39,7 @@ class LoginPanel extends JPanel {
 
         gc.gridwidth = 1; gc.gridy++;
         JLabel lUser = new JLabel("Username:");
+        lUser.setFont(Theme.PIXEL_FONT.deriveFont(14f)); // Label juga dipixelkan biar serasi
         lUser.setForeground(Theme.TEXT);
         gc.gridx = 0;
         add(lUser, gc);
@@ -43,6 +50,7 @@ class LoginPanel extends JPanel {
 
         gc.gridx = 0; gc.gridy++;
         JLabel lPass = new JLabel("Password:");
+        lPass.setFont(Theme.PIXEL_FONT.deriveFont(14f)); // Label juga dipixelkan
         lPass.setForeground(Theme.TEXT);
         add(lPass, gc);
 

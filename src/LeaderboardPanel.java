@@ -40,8 +40,12 @@ public class LeaderboardPanel extends JPanel {
         tabel.setFillsViewportHeight(true);
         tabel.setBackground(Theme.PANEL);
         tabel.setForeground(Theme.TEXT);
-        tabel.setFont(Theme.TEXT_FONT);
-        tabel.setRowHeight(24);
+        
+        // --- UBAH FONT TABEL JADI PIXEL ---
+        tabel.setFont(Theme.PIXEL_FONT.deriveFont(14f)); 
+        tabel.setRowHeight(28); // Tinggi baris dibesarkan sedikit
+        // ----------------------------------
+        
         tabel.setGridColor(new Color(70, 70, 70));
 
         DefaultTableCellRenderer center = new DefaultTableCellRenderer();
@@ -53,7 +57,11 @@ public class LeaderboardPanel extends JPanel {
         JTableHeader header = tabel.getTableHeader();
         header.setBackground(Theme.PRIMARY);
         header.setForeground(Color.BLACK);
-        header.setFont(Theme.H2);
+        
+        // --- UBAH FONT HEADER JADI PIXEL ---
+        header.setFont(Theme.PIXEL_FONT.deriveFont(14f));
+        // -----------------------------------
+        
         ((DefaultTableCellRenderer) header.getDefaultRenderer())
                 .setHorizontalAlignment(SwingConstants.CENTER);
 
