@@ -9,13 +9,13 @@ public class Bird extends Obstacle implements Animatable {
 
     public Bird(double x, double y, double speedX) {
         super(x, y, UKURAN_LEBAR_BURUNG, UKURAN_TINGGI_BURUNG, speedX);
-        BufferedImage raw = ImageManager.loadImage("Bird.png"); // 
+        BufferedImage raw = ImageManager.loadImage("Bird.png");
         if (raw != null) {
             BufferedImage[] frames = AnimatedSprite.sliceFrames(raw);
             for (int i = 0; i < frames.length; i++) {
                 frames[i] = ImageManager.scaleImage(frames[i], UKURAN_LEBAR_BURUNG, UKURAN_TINGGI_BURUNG);
             }
-            anim = new AnimatedSprite(frames, 90); 
+            anim = new AnimatedSprite(frames, 90);
         }
     }
 
@@ -38,7 +38,7 @@ public class Bird extends Obstacle implements Animatable {
     @Override
     public Rectangle getBounds() {
         int marginX = 15;
-        int marginY = 14; 
+        int marginY = 14;
 
         return new Rectangle(
             (int) x + marginX,

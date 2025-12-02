@@ -37,7 +37,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     private static final int GROUND_Y = 400;
 
-    private Integer personalHighScore = null; 
+    private Integer personalHighScore = null;
 
 
     private double bgOffset = 0;
@@ -261,7 +261,7 @@ public class GamePanel extends JPanel implements Runnable {
     private void loadUserHighScore() {
         int uid = app.getCurrentUserId();
         if (uid <= 0) {
-            personalHighScore = null; 
+            personalHighScore = null;
             return;
         }
 
@@ -481,7 +481,7 @@ public class GamePanel extends JPanel implements Runnable {
                 teks = String.valueOf(angka);
             }
 
-            g2.setFont(new Font("Segoe UI", Font.BOLD, 96));
+            g2.setFont(Theme.H1.deriveFont(Font.BOLD, 96));
             FontMetrics fm0 = g2.getFontMetrics();
             int w = fm0.stringWidth(teks);
             int h = fm0.getAscent();
@@ -489,7 +489,7 @@ public class GamePanel extends JPanel implements Runnable {
             int x = (getWidth()  - w) / 2;
             int y = (getHeight() + h) / 2;
 
-            g2.setColor(new Color(255, 255, 255, 210));
+            g2.setColor(Theme.PRIMARY);
             g2.drawString(teks, x, y);
         }
 
@@ -536,7 +536,6 @@ public class GamePanel extends JPanel implements Runnable {
             g2.drawString(globalText, cardX + (cardW - sw2) / 2, baseY + 35);
             g2.drawString(personalText, cardX + (cardW - sw3) / 2, baseY + 70);
 
-            // HINT: ENTER & ESC
             g2.setFont(Theme.TEXT_FONT);
             String hint1 = "ENTER - Main lagi";
             String hint2 = "ESC - Kembali ke menu";

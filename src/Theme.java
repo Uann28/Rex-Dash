@@ -17,8 +17,8 @@ class Theme {
     public static final Color DISABLED = new Color(70, 70, 70);
 
     // --- Warna Popup ---
-    public static final Color DIALOG_BG = new Color(62,105, 133); 
-    public static final Color DIALOG_ACCENT = new Color(4, 9, 15); 
+    public static final Color DIALOG_BG = new Color(62,105, 133);
+    public static final Color DIALOG_ACCENT = new Color(4, 9, 15);
 
     //---------- Font ----------
     public static final Font H2        = new Font("Segoe UI", Font.BOLD, 18);
@@ -29,8 +29,8 @@ class Theme {
     public static final Font H0;
     public static final Font H1;
     
-    private static Font PIXEL_TITLE_FONT; 
-    public static Font PIXEL_FONT; 
+    private static Font PIXEL_TITLE_FONT;
+    public static Font PIXEL_FONT;
 
     static {
         PIXEL_TITLE_FONT = loadCustomFont("/assets/Daydream DEMO.otf");
@@ -74,7 +74,7 @@ class Theme {
             InputStream is = Theme.class.getResourceAsStream(resourcePath);
             if (is == null) {
                 System.err.println("Gagal memuat font (tidak ditemukan): " + resourcePath);
-                return new Font("Dialog", Font.BOLD, 18); 
+                return new Font("Dialog", Font.BOLD, 18);
             }
             Font customFont = Font.createFont(Font.TRUETYPE_FONT, is);
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -106,7 +106,7 @@ class Theme {
             UIManager.put("Button.focus", new ColorUIResource(new Color(0,0,0,0)));
 
             UIManager.put("Button.border", BorderFactory.createCompoundBorder(
-                    BorderFactory.createLineBorder(DIALOG_ACCENT, 2), 
+                    BorderFactory.createLineBorder(DIALOG_ACCENT, 2),
                     BorderFactory.createEmptyBorder(5, 15, 5, 15)
             ));
 

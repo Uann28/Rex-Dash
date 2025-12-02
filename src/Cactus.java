@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 public class Cactus extends Obstacle {
     private BufferedImage cactusImage;
     private static final int UKURAN_LEBAR_CACTUS = 50;
-    private static final int UKURAN_TINGGI_CACTUS = 65;
+    private static final int UKURAN_TINGGI_CACTUS = 75;
     private static final int Y_OFFSET_CACTUS = 10;
     
     public Cactus(double x, double groundY, double speedX) {

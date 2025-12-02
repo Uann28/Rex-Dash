@@ -13,11 +13,9 @@ class LoginPanel extends JPanel {
         setLayout(new GridBagLayout());
         loadBackgroundImage("/assets/bg.jpeg");
 
-        // --- SETTING FONT INPUT MENJADI PIXEL ---
-        Font inputFont = Theme.PIXEL_FONT.deriveFont(16f); 
+        Font inputFont = Theme.PIXEL_FONT.deriveFont(16f);
         kolomUser.setFont(inputFont);
         kolomPass.setFont(inputFont);
-        // ----------------------------------------
 
         GridBagConstraints gc = new GridBagConstraints();
         gc.insets = new Insets(6, 6, 6, 6);
@@ -39,7 +37,7 @@ class LoginPanel extends JPanel {
 
         gc.gridwidth = 1; gc.gridy++;
         JLabel lUser = new JLabel("Username:");
-        lUser.setFont(Theme.PIXEL_FONT.deriveFont(14f)); // Label juga dipixelkan biar serasi
+        lUser.setFont(Theme.PIXEL_FONT.deriveFont(14f));
         lUser.setForeground(Theme.TEXT);
         gc.gridx = 0;
         add(lUser, gc);
@@ -50,7 +48,7 @@ class LoginPanel extends JPanel {
 
         gc.gridx = 0; gc.gridy++;
         JLabel lPass = new JLabel("Password:");
-        lPass.setFont(Theme.PIXEL_FONT.deriveFont(14f)); // Label juga dipixelkan
+        lPass.setFont(Theme.PIXEL_FONT.deriveFont(14f));
         lPass.setForeground(Theme.TEXT);
         add(lPass, gc);
 
@@ -87,7 +85,7 @@ class LoginPanel extends JPanel {
         if (backgroundImage != null) {
             g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
             Graphics2D g2d = (Graphics2D) g.create();
-            g2d.setColor(new Color(0, 0, 0, 150));
+            g2d.setColor(new Color(0, 0, 0, 100));
             g2d.fillRect(0, 0, getWidth(), getHeight());
             g2d.dispose();
         } else {
