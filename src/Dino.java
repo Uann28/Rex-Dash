@@ -23,10 +23,9 @@ public class Dino extends GameObject implements Animatable {
     private BufferedImage trexJumping;
     private BufferedImage trexCrouch;
     
-    // Kecepatan animasi (100 milidetik per frame = 10 frame per detik)
     private static final long FRAME_DELAY_MILLIS = 100;
-    private static final int UKURAN_LEBAR_DINO= 70;
-    private static final int UKURAN_TINGGI_DINO = 75;
+    private static final int UKURAN_LEBAR_DINO= 80;
+    private static final int UKURAN_TINGGI_DINO = 90;
     private static final int CROUCH_REDUCTION = UKURAN_TINGGI_DINO / 3;
 
     private static final int HITBOX_MARGIN_X = 18;
@@ -44,7 +43,7 @@ public class Dino extends GameObject implements Animatable {
         this.groundY = groundY;
         this.footAdjust = footAdjust;
 
-        BufferedImage rawSheet = ImageManager.loadImage("trex2.png");
+        BufferedImage rawSheet = ImageManager.loadImage("trex1.png");
         
         if (rawSheet != null) {
             BufferedImage[] rawFrames = AnimatedSprite.sliceFrames(rawSheet);
